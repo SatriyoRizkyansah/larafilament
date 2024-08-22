@@ -15,9 +15,6 @@ class ListPosts extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
-            TextColumn::make('id'),
-            TextColumn::make('name'),
-            TextColumn::make('slug'),
         ];
     }
 }
