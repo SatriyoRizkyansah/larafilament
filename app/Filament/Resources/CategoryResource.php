@@ -2,16 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Set;
+use App\Models\Category;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Illuminate\Support\Str;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Card;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\CategoryResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\CategoryResource\RelationManagers;
+
 
 class CategoryResource extends Resource
 {
@@ -23,7 +29,15 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                //
+
+                Card::make()->schema([
+
+                TextInput::make('name')
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                    
+                TextInput::make('slug')
+                ])
             ]);
     }
 
@@ -31,7 +45,9 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                //
+            TextColumn::make('id'),
+            TextColumn::make('name'),
+            TextColumn::make('slug'),
             ])
             ->filters([
                 //
